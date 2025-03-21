@@ -81,7 +81,7 @@ def createDataSetFromDir(base_dir, bedFile):
 
             scores = dict()     # Scores of B-allel Frequencies
             #DBSNP ID collecting system
-            for i in dbsnpf.readlines():
+            for i in dbsnpf:
                 temp = i.strip().split('\t')
                 if temp[0].find("chr")!= -1:
                     ID = str(temp[0][3:]) + "_" + str(temp[2])
@@ -98,7 +98,7 @@ def createDataSetFromDir(base_dir, bedFile):
             #VCF file PROCESSING  and Generation of features
             total = 0
             GVCF_samples = dict()
-            for i in f.readlines():
+            for i in f:
                 if i.startswith("#"):
                     if i.find("DP4") != -1:
                         vcf_flag = 1
@@ -249,7 +249,7 @@ def createDataSetFromDir(base_dir, bedFile):
 #create dataset from the VCF list files
 def createDataSetFromList(base_list, bedFile):
     base_F = open(base_list,'r')
-    for line in base_F.readlines():
+    for line in base_F:
         link = line.strip()
         f = open(link, "r")
         dbsnpf= open(bedFile,"r")
@@ -264,7 +264,7 @@ def createDataSetFromList(base_list, bedFile):
 
         scores = dict()     # Scores of B-allel Frequencies
         #DBSNP ID collecting system
-        for i in dbsnpf.readlines():
+        for i in dbsnpf:
             temp = i.strip().split('\t')
             if temp[0].find("chr")!= -1:
                 ID = str(temp[0][3:]) + "_" + str(temp[2])
@@ -281,7 +281,7 @@ def createDataSetFromList(base_list, bedFile):
         #VCF file PROCESSING  and Generation of features
         total = 0
         GVCF_samples = dict()
-        for i in f.readlines():
+        for i in f:
             if i.startswith("#"):
                 if i.find("DP4") != -1:
                     vcf_flag = 1
@@ -446,7 +446,7 @@ def createDataSetFromDir_TEST(base_dir, bedFile,order):
 
             scores = dict()     # Scores of B-allel Frequencies
             #DBSNP ID collecting system
-            for i in dbsnpf.readlines():
+            for i in dbsnpf:
                 temp = i.strip().split('\t')
                 ID = str(temp[0])+"_"+str(temp[2])
                 scores[ID] = 0
@@ -455,7 +455,7 @@ def createDataSetFromDir_TEST(base_dir, bedFile,order):
             file = file + "_" + order
             feature_list[file] = []
             #VCF file PROCESSING  and Generation of features
-            for i in f.readlines():
+            for i in f:
                 if i.startswith("#"):
                     continue
 
@@ -495,7 +495,7 @@ def createDataSetFromDir_TEST(base_dir, bedFile,order):
 #create dataset from the VCF list files
 def createDataSetFromList_TEST(base_list, bedFile,order):
     base_F = open(base_list,'r')
-    for line in base_F.readlines():
+    for line in base_F:
         link = line.strip()
         f = open(link, "r")
         dbsnpf= open(bedFile,"r")
@@ -507,7 +507,7 @@ def createDataSetFromList_TEST(base_list, bedFile,order):
 
         scores = dict()     # Scores of B-allel Frequencies
         #DBSNP ID collecting system
-        for i in dbsnpf.readlines():
+        for i in dbsnpf:
             temp = i.strip().split('\t')
             ID = str(temp[0])+"_"+str(temp[2])
             scores[ID] = 0
@@ -516,7 +516,7 @@ def createDataSetFromList_TEST(base_list, bedFile,order):
         file = file + "_" + order
         feature_list[file] = []
         #VCF file PROCESSING  and Generation of features
-        for i in f.readlines():
+        for i in f:
             if i.startswith("#"):
                 continue
 
@@ -1005,7 +1005,7 @@ def classifying_test():
     keyF = open(testsamplename,'r')
     temp =[]
 
-    for k in keyF.readlines():
+    for k in keyF:
         keyfile = k.split(":")
         keyfile[0] = keyfile[0].strip() + "_1"
         keyfile[1] = keyfile[1].strip() + "_2"
@@ -1182,7 +1182,7 @@ def run_mpileup():
         print("WARNNING : NCM_HOME is not defined yet. Therefore, program will try to search ncm.conf file from the current directory")
         INSTALL_DIR=""
     with open(INSTALL_DIR + "ncm.conf",'r') as F:
-        for line in F.readlines():
+        for line in F:
             temp = line.split('=')
             if temp[0].startswith("SAMTOOLS"):
                 SAMTOOLS = temp[1].strip()
@@ -1226,7 +1226,7 @@ def find_bam_list():
 
 def get_bam_list():
     with open(base_list,'r') as F:
-        for line in F.readlines():
+        for line in F:
              bam_list.append(line.strip())
 
 
@@ -1237,7 +1237,7 @@ def output_filter():
     failure_set_U = []
 
     with open(outdir + "/" + out_tag + "_all.txt","r") as F:
-        for line in F.readlines():
+        for line in F:
             temp = line.strip().split('\t')
 
             sample1 = temp[0]
@@ -1424,7 +1424,7 @@ if __name__ == '__main__':
         os.mkdir(outdir)
 
     key_order = open(bedFile,'r')
-    for line in key_order.readlines():
+    for line in key_order:
         if line.startswith("#"):
             continue
         temp = line.strip().split('\t')
