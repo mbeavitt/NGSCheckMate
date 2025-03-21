@@ -21,36 +21,33 @@ pdf_tag = ""
 Family_flag = False
 Nonzero_flag = False
 
-
-#Calculation of AVerages
+# Calculation of Averages
 def average(x):
     assert len(x) > 0
-    return float(sum(x)) / len(x)
+    return sum(x) / len(x)
 
-#Calulation of Pearson Correlation
+# Calculation of Pearson Correlation
 def pearson_def(x, y):
     assert len(x) == len(y)
     n = len(x)
 
-## Need to be checked , n==0 case
-    if n == 0 :
+    if n == 0:
         return 0
 
-    assert n > 0
     avg_x = average(x)
     avg_y = average(y)
     diffprod = 0
     xdiff2 = 0
     ydiff2 = 0
-    for idx in range(n):
-        xdiff = x[idx] - avg_x
-        ydiff = y[idx] - avg_y
+
+    for xval, yval in zip(x, y):
+        xdiff = xval - avg_x
+        ydiff = yval - avg_y
         diffprod += xdiff * ydiff
-        xdiff2 += xdiff * xdiff
-        ydiff2 += ydiff * ydiff
+        xdiff2 += xdiff ** 2
+        ydiff2 += ydiff ** 2
 
     sqrt_xdiff2_ydiff2 = math.sqrt(xdiff2 * ydiff2)
-
     return diffprod / sqrt_xdiff2_ydiff2 if sqrt_xdiff2_ydiff2 != 0.0 else 0.0
 
 # createDataSet
