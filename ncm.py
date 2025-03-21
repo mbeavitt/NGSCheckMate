@@ -6,24 +6,16 @@ import argparse
 from argparse import RawTextHelpFormatter
 from subprocess import call
 
-global bed_file
-global outdir
-global outfilename
-global temp_out
-global testsamplename
-global SAMTOOLS
-global BCFTOOLS
-global REF
-global bam_list
+global bed_file, outdir, outfilename, temp_out, testsamplename, SAMTOOLS, BCFTOOLS, REF, bam_list
 
-glob_scores = dict()    #Whole score
-feature_list = dict()   #Each Feature List
-label = []              #Samples
-features = []           #dbSNP features
-mean_depth = dict()
-real_depth = dict()
-real_count = dict()
-sum_file = dict()
+glob_scores = {}    # Whole score
+feature_list = {}   # Each Feature List
+label = []         # Samples
+features = []      # dbSNP features
+mean_depth = {}
+real_depth = {}
+real_count = {}
+sum_file = {}
 out_tag = ""
 pdf_tag = ""
 Family_flag = False
