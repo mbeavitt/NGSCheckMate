@@ -65,7 +65,7 @@ def pearson_def(x, y):
 def createDataSetFromDir(base_dir, bedFile):
     for root, dirs, files in os.walk(base_dir):
         for file in files:
-    	    if not file.endswith(".vcf"):
+            if not file.endswith(".vcf"):
                 continue
 
             link = root + '/' +  file
@@ -85,11 +85,11 @@ def createDataSetFromDir(base_dir, bedFile):
                 temp = i.strip().split('\t')
                 if temp[0].find("chr")!= -1:
                     ID = str(temp[0][3:]) + "_" + str(temp[2])
-                else:   
+                else:
                     ID = str(temp[0]) + "_" + str(temp[2])
                 scores[ID] = 0
                 count = count + 1
-            
+
             ## 0618_samtools and haplotyper
             vcf_flag = 0
 
@@ -98,7 +98,7 @@ def createDataSetFromDir(base_dir, bedFile):
             #VCF file PROCESSING  and Generation of features
             total = 0
             GVCF_samples = dict()
-            for i in f.readlines():        
+            for i in f.readlines():
                 if i.startswith("#"):
                     if i.find("DP4") != -1:
                         vcf_flag = 1
@@ -119,10 +119,10 @@ def createDataSetFromDir(base_dir, bedFile):
                     continue
 
                 temp = i.strip().split('\t')
-              ## ID in BED file only 
+              ## ID in BED file only
                 if temp[0].find("chr")!= -1:
                     ID = str(temp[0][3:]) + "_" + str(temp[1])
-                else:   
+                else:
                     ID = str(temp[0]) + "_" + str(temp[1])
 
                 if ID not in scores:
@@ -138,14 +138,14 @@ def createDataSetFromDir(base_dir, bedFile):
                         if j.startswith("DP4"):
                             readcounts = j.split(',')
                             readcounts[0] = readcounts[0][4:]
-                            total_reads =(float(readcounts[0]) + float(readcounts[1]) + float(readcounts[2]) + float(readcounts[3])) 
+                            total_reads =(float(readcounts[0]) + float(readcounts[1]) + float(readcounts[2]) + float(readcounts[3]))
                             score = 0
                             if total_reads > 0:
                                 score = (float(readcounts[2]) + float(readcounts[3])) / total_reads
-                                real_count[file] = real_count[file] + 1  
+                                real_count[file] = real_count[file] + 1
 
                             depth[file] = depth[file] + total_reads
-                          
+
                             if ID in scores:
                                 feature_list[file].append(ID)
                                 scores[ID]= score
@@ -174,7 +174,7 @@ def createDataSetFromDir(base_dir, bedFile):
                     depth[file] = depth[file] + float(values[DP_idx])
                     if float(values[DP_idx]) > 0:
                         real_count[file] = real_count[file] + 1
-                    
+
                     if ID in scores:
                         feature_list[file].append(ID)
                         scores[ID]= score  ##from here!
@@ -226,7 +226,7 @@ def createDataSetFromDir(base_dir, bedFile):
                     if glob_scores.has_key(file):
                         glob_scores[file].append(scores[key])
                     else:
-                        glob_scores[file] = [scores[key]]    
+                        glob_scores[file] = [scores[key]]
             else:
                 for file in GVCF_samples:
                     mean_depth[file] = depth[file] / float(count)
@@ -239,7 +239,7 @@ def createDataSetFromDir(base_dir, bedFile):
                         if glob_scores.has_key(file):
                             glob_scores[file].append(score_set[file][key])
                         else:
-                            glob_scores[file] = [score_set[file][key]]    
+                            glob_scores[file] = [score_set[file][key]]
             dbsnpf.close()
             f.close()
 
@@ -268,11 +268,11 @@ def createDataSetFromList(base_list, bedFile):
             temp = i.strip().split('\t')
             if temp[0].find("chr")!= -1:
                 ID = str(temp[0][3:]) + "_" + str(temp[2])
-            else:   
+            else:
                 ID = str(temp[0]) + "_" + str(temp[2])
             scores[ID] = 0
             count = count + 1
-        
+
         ## 0618_samtools and haplotyper
         vcf_flag = 0
 
@@ -281,7 +281,7 @@ def createDataSetFromList(base_list, bedFile):
         #VCF file PROCESSING  and Generation of features
         total = 0
         GVCF_samples = dict()
-        for i in f.readlines():        
+        for i in f.readlines():
             if i.startswith("#"):
                 if i.find("DP4") != -1:
                     vcf_flag = 1
@@ -302,10 +302,10 @@ def createDataSetFromList(base_list, bedFile):
                 continue
 
             temp = i.strip().split('\t')
-          ## ID in BED file only 
+          ## ID in BED file only
             if temp[0].find("chr")!= -1:
                 ID = str(temp[0][3:]) + "_" + str(temp[1])
-            else:   
+            else:
                 ID = str(temp[0]) + "_" + str(temp[1])
 
             if ID not in scores:
@@ -321,21 +321,21 @@ def createDataSetFromList(base_list, bedFile):
                     if j.startswith("DP4"):
                         readcounts = j.split(',')
                         readcounts[0] = readcounts[0][4:]
-                        total_reads =(float(readcounts[0]) + float(readcounts[1]) + float(readcounts[2]) + float(readcounts[3])) 
+                        total_reads =(float(readcounts[0]) + float(readcounts[1]) + float(readcounts[2]) + float(readcounts[3]))
                         score = 0
                         if total_reads > 0:
                             score = (float(readcounts[2]) + float(readcounts[3])) / total_reads
-                            real_count[file] = real_count[file] + 1  
+                            real_count[file] = real_count[file] + 1
 
                         depth[file] = depth[file] + total_reads
-                       
+
                         if ID in scores:
                             feature_list[file].append(ID)
                             scores[ID]= score
                             sum[file] = sum[file] + float(readcounts[2]) + float(readcounts[3])
             elif total == 1 and vcf_flag == 0:
                 format = temp[8].split(':')  ##Format
-                AD_idx = -1 
+                AD_idx = -1
                 DP_idx = -1
                 for idx in range(0,len(format)):
                     if format[idx] == "AD":
@@ -390,8 +390,8 @@ def createDataSetFromList(base_list, bedFile):
                         score = float(readcounts[1])/ (float(readcounts[0]) + float(readcounts[1]))
                     depth[file] = depth[file] + float(values[DP_idx])
                     if float(values[DP_idx]) > 0:
-                        real_count[file] = real_count[file] + 1                   
- 
+                        real_count[file] = real_count[file] + 1
+
                     if ID in scores:
                         feature_list[file].append(ID)
                         score_set[file][ID]= score   ##from here!
@@ -409,7 +409,7 @@ def createDataSetFromList(base_list, bedFile):
                 if glob_scores.has_key(file):
                     glob_scores[file].append(scores[key])
                 else:
-                    glob_scores[file] = [scores[key]]    
+                    glob_scores[file] = [scores[key]]
         else:
             for file in GVCF_samples:
                 mean_depth[file] = depth[file] / float(count)
@@ -422,7 +422,7 @@ def createDataSetFromList(base_list, bedFile):
                     if glob_scores.has_key(file):
                         glob_scores[file].append(score_set[file][key])
                     else:
-                        glob_scores[file] = [score_set[file][key]]    
+                        glob_scores[file] = [score_set[file][key]]
         dbsnpf.close()
         f.close()
 
@@ -513,7 +513,7 @@ def createDataSetFromList_TEST(base_list, bedFile,order):
             scores[ID] = 0
             count = count + 1
 
-        file = file + "_" + order 
+        file = file + "_" + order
         feature_list[file] = []
         #VCF file PROCESSING  and Generation of features
         for i in f.readlines():
@@ -608,7 +608,7 @@ def clustering(K):
             sum = sum + max_value
             Pos_count =  Pos_count + 1
             outPOS=str(label[target]) +  "\tmatched to\t" + str(label[max_indice])+ "\tscore=\t" + str(max_value)
-            print outPOS
+            print(outPOS)
             #POS_F.write(outPOS + "\n")
             orderCount = orderCount + 1
 
@@ -683,8 +683,8 @@ def classify(T):
                 NEG_F.write(outNEG + "\n")
 
 
-    print sum/Pos_count
-    print othersum/Neg_count
+    print(sum/Pos_count)
+    print(othersum/Neg_count)
 
     POS_F.close()
     NEG_F.close()
@@ -693,8 +693,8 @@ def classify(T):
 def classifyNV(vec2Classify, p0Vec, p0S, p1Vec, p1S):
     if abs(p0Vec - vec2Classify) - p0S > abs(p1Vec - vec2Classify) - p1S:
         return abs((abs(p0Vec - vec2Classify) - p0S )/ (abs(p1Vec - vec2Classify) -  p1S )), 1
-    else: 
-        return abs((abs(p0Vec - vec2Classify) - p0S) / (abs(p1Vec - vec2Classify)  -  p1S)), 0  
+    else:
+        return abs((abs(p0Vec - vec2Classify) - p0S) / (abs(p1Vec - vec2Classify)  -  p1S)), 0
 
 #    if depth < 5:
 #        if (vec2Classify >= (p1Vec - p1S)):
@@ -913,7 +913,7 @@ def classifying():
 
         output_matrix_f = open(outdir + "/" + out_tag + "_output_corr_matrix.txt","w")
         output_matrix = dict()
-        
+
         if out_tag!="stdout":
         	out_f = open(outdir + "/" + out_tag + "_all.txt","w")
         	out_matched = open(outdir + "/" + out_tag + "_matched.txt","w")
@@ -939,29 +939,29 @@ def classifying():
                 p1V,p1S, p0V, p0S = trainNV(array(trainMatrix),array(trainCategory))
                 result = classifyNV(samples[i],p0V,p0S, p1V, p1S)
                 if result[1] == 1:
-                    print str(temp[i][0]) + '\tsample is matched to\t',str(temp[i][1]),'\t', samples[i]
+                    print(str(temp[i][0]) + '\tsample is matched to\t',str(temp[i][1]),'\t',samples[i])
                 predStrength.append(result[0])
         else :
             for i in range(0,len(samples)):
                 depth = 0
-                if Nonzero_flag: 
+                if Nonzero_flag:
                     depth = min(real_depth[temp[i][0].strip()],real_depth[temp[i][1].strip()])
                 else:
                     depth = min(mean_depth[temp[i][0].strip()],mean_depth[temp[i][1].strip()])
-               
+
                 p1V,p1S, p0V, p0S = getPredefinedModel(depth)
                 result = classifyNV(samples[i],p0V,p0S, p1V, p1S)
                 if result[1] ==1:
                     output_matrix[temp[i][0].strip()][temp[i][1].strip()] = samples[i]
                     output_matrix[temp[i][1].strip()][temp[i][0].strip()] = samples[i]
                     if out_tag=="stdout":
-                        print str(temp[i][0]) + '\tmatched\t',str(temp[i][1]),'\t', round(samples[i],4),'\t',round(depth,2)
+                        print(str(temp[i][0]) + '\tmatched\t',str(temp[i][1]),'\t',round(samples[i],4),'\t',round(depth,2))
                     else :
                         out_f.write(str(temp[i][0]) + '\tmatched\t' + str(temp[i][1])  + '\t'+  str(round(samples[i],4)) + '\t' + str(round(depth,2)) + '\n')
                         out_matched.write(str(temp[i][0]) + '\tmatched\t' + str(temp[i][1])  + '\t'+  str(round(samples[i],4)) + '\t' + str(round(depth,2)) + '\n')
                 else:
                     if out_tag=="stdout":
-                        print str(temp[i][0]) + '\tunmatched\t',str(temp[i][1]),'\t', round(samples[i],4),'\t',round(depth,2)
+                        print(str(temp[i][0]) + '\tunmatched\t',str(temp[i][1]),'\t', round(samples[i],4),'\t',round(depth,2))
                     else :
                         out_f.write(str(temp[i][0]) + '\tunmatched\t' + str(temp[i][1])  + '\t'+  str(round(samples[i],4)) + '\t' + str(round(depth,2)) + '\n')
                 predStrength.append(result[0])
@@ -977,7 +977,7 @@ def classifying():
 #        for key in output_matrix.keys():
 #            for otherkey in output_matrix[key].keys():
 #                if output_matrix[key][otherkey] != 0:
-#                    output_matrix[otherkey][key] = output_matrix[key][otherkey] 
+#                    output_matrix[otherkey][key] = output_matrix[key][otherkey]
 
         for key in output_matrix.keys():
             if key.find(".vcf") != -1:
@@ -986,12 +986,12 @@ def classifying():
                 output_matrix_f.write(key)
             for otherkey in output_matrix.keys():
                 output_matrix_f.write("\t" + str(output_matrix[key][otherkey]))
-            output_matrix_f.write("\n")   
-            
-        output_matrix_f.close()         
+            output_matrix_f.write("\n")
+
+        output_matrix_f.close()
         if out_tag!="stdout":
         	out_f.close()
-        	out_matched.close()   
+        	out_matched.close()
 
 
 
@@ -1024,27 +1024,27 @@ def classifying_test():
             tempB = set(feature_list[temp[i][1].strip()])
 
             selected_feature = tempA.intersection(tempB)
-            
+
             vecA = []
             vecB = []
-            
+
             idx = 0
             for k in features:
                 if k in selected_feature:
                     vecA.append(glob_scores[temp[i][0].strip()][idx])
                     vecB.append(glob_scores[temp[i][1].strip()][idx])
                 idx = idx + 1
-            
+
             distance = pearson_def(vecA, vecB)
             samples.append(distance)
-            
+
         predStrength = []
         training_flag =0
     ####0715 Append
 
         output_matrix_f = open(outdir + "/output_corr_matrix.txt","w")
         output_matrix = dict()
-        
+
         if out_tag!="stdout":
             out_f = open(outdir + "/" + out_tag + "_all.txt","w")
             out_matched = open(outdir + "/" + out_tag + "_matched.txt","w")
@@ -1070,7 +1070,7 @@ def classifying_test():
                 p1V,p1S, p0V, p0S = trainNV(array(trainMatrix),array(trainCategory))
                 result = classifyNV(samples[i],p0V,p0S, p1V, p1S)
                 if result[1] == 1:
-                    print str(temp[i][0]) + '\tsample is matched to\t',str(temp[i][1]),'\t', samples[i]
+                    print(str(temp[i][0]) + '\tsample is matched to\t',str(temp[i][1]),'\t', samples[i])
                 predStrength.append(result[0])
         else :
             for i in range(0,len(samples)):
@@ -1081,13 +1081,13 @@ def classifying_test():
                     output_matrix[temp[i][0].strip()][temp[i][1].strip()] = samples[i]
                     output_matrix[temp[i][1].strip()][temp[i][0].strip()] = samples[i]
                     if out_tag=="stdout":
-                        print str(temp[i][0]) + '\tmatched\t',str(temp[i][1]),'\t', round(samples[i],4),'\t',round(depth,2)
+                        print(str(temp[i][0]) + '\tmatched\t',str(temp[i][1]),'\t', round(samples[i],4),'\t',round(depth,2))
                     else :
                         out_f.write(str(temp[i][0]) + '\tmatched\t' + str(temp[i][1])  + '\t'+  str(round(samples[i],4)) + '\t' + str(round(depth,2)) + '\n')
                         out_matched.write(str(temp[i][0]) + '\tmatched\t' + str(temp[i][1])  + '\t'+  str(round(samples[i],4)) + '\t' + str(round(depth,2)) + '\n')
                 else:
                     if out_tag=="stdout":
-                        print str(temp[i][0]) + '\tunmatched\t',str(temp[i][1]),'\t', round(samples[i],4),'\t',round(depth,2)
+                        print(str(temp[i][0]) + '\tunmatched\t',str(temp[i][1]),'\t', round(samples[i],4),'\t',round(depth,2))
                     else :
                         out_f.write(str(temp[i][0]) + '\tunmatched\t' + str(temp[i][1])  + '\t'+  str(round(samples[i],4)) + '\t' + str(round(depth,2)) + '\n')
                 predStrength.append(result[0])
@@ -1100,15 +1100,15 @@ def classifying_test():
 #        for key in output_matrix.keys():
 #            for otherkey in output_matrix[key].keys():
 #                if output_matrix[key][otherkey] != 0:
-#                    output_matrix[otherkey][key] = output_matrix[key][otherkey] 
+#                    output_matrix[otherkey][key] = output_matrix[key][otherkey]
 
         for key in output_matrix.keys():
             output_matrix_f.write(key[0:key.index('.')])
             for otherkey in output_matrix.keys():
                 output_matrix_f.write("\t" + str(output_matrix[key][otherkey]))
-            output_matrix_f.write("\n")   
-            
-        output_matrix_f.close()         
+            output_matrix_f.write("\n")
+
+        output_matrix_f.close()
         if out_tag!="stdout":
             out_f.close()
             out_matched.close()
@@ -1170,7 +1170,7 @@ def getCallResult(command):
 
 
 def run_mpileup():
-    
+
 
     SAMTOOLS=""
     BCFTOOLS=""
@@ -1179,19 +1179,19 @@ def run_mpileup():
     if "NCM_HOME" in os.environ.keys():
         INSTALL_DIR=os.environ['NCM_HOME'] + "/"
     else:
-        print "WARNNING : NCM_HOME is not defined yet. Therefore, program will try to search ncm.conf file from the current directory"
+        print("WARNNING : NCM_HOME is not defined yet. Therefore, program will try to search ncm.conf file from the current directory")
         INSTALL_DIR=""
     with open(INSTALL_DIR + "ncm.conf",'r') as F:
         for line in F.readlines():
             temp = line.split('=')
-	    if temp[0].startswith("SAMTOOLS"):
+            if temp[0].startswith("SAMTOOLS"):
                 SAMTOOLS = temp[1].strip()
             elif temp[0].startswith("BCFTOOLS"):
                 BCFTOOLS = temp[1].strip()
             elif temp[0].startswith("REF"):
                 REF = temp[1].strip()
 #    REF="/NAS/nas33-2/mpileup/hg19.fasta"
-    
+
     version =""
 ##version of samtools
     samtools_version = getCallResult(SAMTOOLS)
@@ -1203,7 +1203,7 @@ def run_mpileup():
                 if version_tag.find("Version") != -1:
                     version_list = version_tag.split(" ")
                     version = version_list[1]
-    print version
+    print(version)
 
     for sample in bam_list:
         filename = sample.split("/")
@@ -1212,7 +1212,7 @@ def run_mpileup():
             command = SAMTOOLS + " mpileup -I -uf " + REF + " -l " + bedFile + " " + sample + " | "  + BCFTOOLS + " view -cg - > " + outdir + "/" + tag  + ".vcf"
         else:
             command = SAMTOOLS + " mpileup -uf " + REF + " -l " + bedFile + " " + sample + " | "  + BCFTOOLS + " call -c > " + outdir + "/" + tag  + ".vcf"
-        print command
+        print(command)
         call(command,shell=True)
  #       proc = subprocess.Popen(command, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 #        return_code = proc.wait()
@@ -1239,12 +1239,12 @@ def output_filter():
     with open(outdir + "/" + out_tag + "_all.txt","r") as F:
         for line in F.readlines():
             temp = line.strip().split('\t')
-            
+
             sample1 = temp[0]
             sample2 = temp[2]
-            
+
             match = temp[1]
-            
+
             if match == "matched":
                 if sample1[sample1.index("TCGA"):sample1.index("TCGA")+12] == sample2[sample2.index("TCGA"):sample2.index("TCGA")+12] :
                     success_set_M.append(line)
@@ -1254,15 +1254,15 @@ def output_filter():
                 if sample1[sample1.index("TCGA"):sample1.index("TCGA")+12] == sample2[sample2.index("TCGA"):sample2.index("TCGA")+12] :
                     failure_set_U.append(line)
                 else:
-                    success_set_U.append(line)        
-              
-    Matched_file = open(outdir + "/" + out_tag + "_matched.txt",'w') 
+                    success_set_U.append(line)
+
+    Matched_file = open(outdir + "/" + out_tag + "_matched.txt",'w')
 
     for i in success_set_M:
         Matched_file.write(i)
     for i in failure_set_M:
-        Matched_file.write(i)  
-    
+        Matched_file.write(i)
+
     Matched_file.close()
 
     problem_file = open(outdir + "/" + out_tag + "_problematic.txt",'w')
@@ -1275,8 +1275,8 @@ def output_filter():
     problem_file.close()
 
     Summary_file = open(outdir + "/" + out_tag + "_summary.txt",'w')
-    
- 
+
+
 
     ## paired cluster - only failed things
     Summary_file.write("###########################################\n")
@@ -1299,14 +1299,14 @@ def output_filter():
                 cluster[key].add(temp[0])
                 flag = 1
                 break
-        
+
         if flag == 0:
             cluster[temp[0]] = set()
             cluster[temp[0]].add(temp[0])
             cluster[temp[0]].add(temp[2])
-            
-            
-    count = 0 
+
+
+    count = 0
     for key in cluster:
         temp_list = []
         flag = 0
@@ -1314,22 +1314,22 @@ def output_filter():
             temp_list.append(data)
             sample1 = temp_list[0]
             ID = sample1[sample1.index("TCGA"):sample1.index("TCGA")+12]
-            
+
             for sample1 in cluster[key]:
                 if ID != sample1[sample1.index("TCGA"):sample1.index("TCGA")+12]:
                     flag = 1
 
-              
+
 
         if flag == 1:
             count = count + 1
             Summary_file.write("Cluster " + str(count) + "\n")
-              
+
             for data in cluster[key]:
                 Summary_file.write(data + "\n")
             Summary_file.write("\n")
 
-                
+
     ## Singleton
     Summary_file.write("\n")
     Summary_file.write("###########################################\n")
@@ -1343,17 +1343,17 @@ def output_filter():
 
     for line in result_set:
         temp = line.strip().split('\t')
-        
+
         final_set.add(temp[0])
         final_set.add(temp[2])
-        
+
         flag = 0
         for key in cluster:
             if temp[0] in cluster[key]:
                 filter_set.add(temp[0])
             elif temp[2] in cluster[key]:
                 filter_set.add(temp[2])
-                
+
 
 
     for i in final_set.difference(filter_set):
@@ -1410,7 +1410,7 @@ if __name__ == '__main__':
         base_list = args.datalist
     if args.datadir != None :
         base_dir = args.datadir
-        
+
     if args.family_cutoff:
         Family_flag=True
     if args.nonzero_read:
@@ -1430,9 +1430,9 @@ if __name__ == '__main__':
         temp = line.strip().split('\t')
         if temp[0].find("chr")!= -1:
             features.append(str(temp[0][3:])+"_"+ str(temp[2]))
-        else:   
+        else:
             features.append(str(temp[0])+"_"+ str(temp[2]))
-        
+
 
     if args.BAM_type != False :
         if args.datadir != None :
@@ -1443,7 +1443,7 @@ if __name__ == '__main__':
             get_bam_list()
         run_mpileup()
         base_dir = outdir
-        print "Generate Data Set from " + base_dir + "\nusing this bed file : " + bedFile
+        print("Generate Data Set from " + base_dir + "\nusing this bed file : " + bedFile)
         if args.testsamplename != None:
             testsamplename = args.testsamplename
             createDataSetFromDir_TEST(base_dir,bedFile,"1")
@@ -1454,7 +1454,7 @@ if __name__ == '__main__':
             classifying()
     elif args.VCF_type != False :
         if args.datadir != None :
-            print "Generate Data Set from " + base_dir + "\nusing this bed file : " + bedFile
+            print("Generate Data Set from " + base_dir + "\nusing this bed file : " + bedFile)
             if args.testsamplename != None:
                 testsamplename = args.testsamplename
                 createDataSetFromDir_TEST(base_dir,bedFile,"1")
@@ -1464,7 +1464,7 @@ if __name__ == '__main__':
                 createDataSetFromDir(base_dir,bedFile)
                 classifying()
         elif args.datalist != None :
-            print "Generate Data Set from " + base_list + "\nusing this bed file : " + bedFile
+            print("Generate Data Set from " + base_list + "\nusing this bed file : " + bedFile)
             if args.testsamplename != None:
                 testsamplename = args.testsamplename
                 createDataSetFromList_TEST(base_list,bedFile,"1")
