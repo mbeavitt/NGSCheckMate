@@ -568,14 +568,9 @@ def clustering(K):
         # calculate eucladian distance between two samples
         for i in range(0, dataSetSize):
 
-#            IsdiffPhenotype = 0.0
             comparison = altFreqList[i]
-
             tempB = set(feature_list[keyList[i]])
-
             selected_feature = tempA.intersection(tempB)
-
-#            IsdiffPhenotype = (2*len(selected_feature))/(len(tempA) + len(tempB))
 
             vecA = []
             vecB = []
@@ -589,7 +584,6 @@ def clustering(K):
 
             distance = pearson_def(vecA, vecB)
             dist.append(distance)
-#            pheno.append(IsdiffPhenotype)
 
         orderCount = 0
         while (orderCount < K):
@@ -599,10 +593,7 @@ def clustering(K):
             Pos_count =  Pos_count + 1
             outPOS=str(label[target]) +  "\tmatched to\t" + str(label[max_indice])+ "\tscore=\t" + str(max_value)
             print(outPOS)
-            #POS_F.write(outPOS + "\n")
             orderCount = orderCount + 1
-
-#    print sum/Pos_count
 
 #OLD version
 def classify(T):
@@ -686,17 +677,6 @@ def classifyNV(vec2Classify, p0Vec, p0S, p1Vec, p1S):
     else:
         return abs((abs(p0Vec - vec2Classify) - p0S) / (abs(p1Vec - vec2Classify)  -  p1S)), 0
 
-#    if depth < 5:
-#        if (vec2Classify >= (p1Vec - p1S)):
-#            return (abs(p0Vec - vec2Classify) / p0S )/ (abs(p1Vec - vec2Classify)/ p1S ), 1
-#        else:
-#            return (abs(p0Vec - vec2Classify) / p0S) / (abs(p1Vec - vec2Classify)/ p1S), 0
-#    else:
-#        if (abs(p0Vec - vec2Classify) / p0S > abs(p1Vec - vec2Classify)/ p1S):
-#            return (abs(p0Vec - vec2Classify) / p0S )/ (abs(p1Vec - vec2Classify)/ p1S ), 1
-#        else:
-#            return (abs(p0Vec - vec2Classify) / p0S) / (abs(p1Vec - vec2Classify)/ p1S), 0
-
 
 def trainNV(trainMatrix,trainCategory):
     numTrainDocs = len(trainMatrix)    # #of traning samples
@@ -729,33 +709,6 @@ def calAUC(predStrengths, classLabels):
         cur = (cur[0]-delX,cur[1]-delY)
     return ySum*xStep
 
-#def plotROC(predStrengths, classLabels):
-#    import matplotlib.pyplot as plt
-#    cur = (1.0,1.0) #cursor
-#    ySum = 0.0 #variable to calculate AUC
-#    numPosClas = sum(array(classLabels)==1.0)
-#    yStep = 1/float(numPosClas); xStep = 1/float(len(classLabels)-numPosClas)
-#    sortedIndicies = predStrengths.argsort()#get sorted index, it's reverse
-#    fig = plt.figure()
-#    fig.clf()
-#    ax = plt.subplot(111)
-#    #loop through all the values, drawing a line segment at each point
-#    for index in sortedIndicies.tolist()[0]:
-#        if classLabels[index] == 1:
-#            delX = 0; delY = yStep;
-#        else:
-#            delX = xStep; delY = 0;
-#            ySum += cur[1]
-#        #draw line from cur to (cur[0]-delX,cur[1]-delY)
-#        ax.plot([cur[0],cur[0]-delX],[cur[1],cur[1]-delY], c='b')
-#        cur = (cur[0]-delX,cur[1]-delY)
-#    ax.plot([0,1],[0,1],'b--')
-#    plt.xlabel('False positive rate'); plt.ylabel('True positive rate')
-#    plt.title('ROC curves')
-#    ax.axis([0,1,0,1])
-#    plt.show()
-#    print "the Area Under the Curve is: ",ySum*xStep
-
 def getPredefinedModel(depth):
      if Family_flag:
          if depth > 10:
@@ -769,7 +722,6 @@ def getPredefinedModel(depth):
          elif depth > 0.5:
              return 0.524757,0.023218,0.465653,0.027378
          else:
-    #         print "Warning: Sample region depth is too low < 1"
              return 0.524757,0.023218, 0.465653, 0.027378
      else:
          if depth > 10:
@@ -783,30 +735,7 @@ def getPredefinedModel(depth):
          elif depth > 0.5:
              return 0.529327,0.025785, 0.217839, 0.040334
          else:
-    #         print "Warning: Sample region depth is too low < 1"
              return 0.529327,0.025785, 0.217839, 0.040334
-#     if depth > 30:
-#         return 0.874546, 0.022211, 0.310549, 0.060058
-#     elif depth > 10:
-#         return 0.785249,0.021017, 0.279778, 0.054104
-#     elif depth > 5:
-#         return 0.650573, 0.018699,0.238972, 0.047196
-#     elif depth > 2:
-#         return 0.578386,0.018526, 0.222322, 0.041186
-#     elif depth > 1:
-#         return 0.529327,0.025785, 0.217839, 0.040334
-#     else:
-#         print "Warning: Sample region depth is too low < 1"
-#         return 0.529327,0.025785, 0.217839, 0.040334
-#     if depth > 0.1:
-#        return 0.0351* depth + 0.5538, 0.02, 0.009977*depth + 0.216978, 0.045
-#     else:
-#        print "too low depth"
-#        return 0.529327,0.025785, 0.217839, 0.040334
-#     if depth > 0.5:
-#        return 0.06315* (math.log(depth)) + 0.64903, 0.046154, 0.0005007*depth + 0.3311504,0.12216
-#     else:
-#        return 0.62036, 0.046154, 0.31785, 0.12216
 
 def getPredefinedModel_F(depth):
      if depth > 10:
@@ -820,31 +749,7 @@ def getPredefinedModel_F(depth):
      elif depth > 0.5:
          return 0.529327,0.025785, 0.457839, 0.040334
      else:
-#         print "Warning: Sample region depth is too low < 1"
          return 0.529327,0.025785, 0.457839, 0.040334
-#     if depth > 30:
-#         return 0.874546, 0.022211, 0.310549, 0.060058
-#     elif depth > 10:
-#         return 0.785249,0.021017, 0.279778, 0.054104
-#     elif depth > 5:
-#         return 0.650573, 0.018699,0.238972, 0.047196
-#     elif depth > 2:
-#         return 0.578386,0.018526, 0.222322, 0.041186
-#     elif depth > 1:
-#         return 0.529327,0.025785, 0.217839, 0.040334
-#     else:
-#         print "Warning: Sample region depth is too low < 1"
-#         return 0.529327,0.025785, 0.217839, 0.040334
-#     if depth > 0.1:
-#        return 0.0351* depth + 0.5538, 0.02, 0.009977*depth + 0.216978, 0.045
-#     else:
-#        print "too low depth"
-#        return 0.529327,0.025785, 0.217839, 0.040334
-#     if depth > 0.5:
-#        return 0.06315* (math.log(depth)) + 0.64903, 0.046154, 0.0005007*depth + 0.3311504,0.12216
-#     else:
-#        return 0.62036, 0.046154, 0.31785, 0.12216
-
 
 def classifying():
     AUCs =[]
@@ -925,7 +830,6 @@ def classifying():
                         trainMatrix.append(samples[j])
                         trainCategory.append(classLabel[j])
                 #training samples in temp
-                #p0V, p1V, pAb = trainNB0(array(trainMatrix),array(trainCategory))
                 p1V,p1S, p0V, p0S = trainNV(array(trainMatrix),array(trainCategory))
                 result = classifyNV(samples[i],p0V,p0S, p1V, p1S)
                 if result[1] == 1:
@@ -963,11 +867,6 @@ def classifying():
             else:
                 output_matrix_f.write("\t" + key)
         output_matrix_f.write("\n")
-
-#        for key in output_matrix.keys():
-#            for otherkey in output_matrix[key].keys():
-#                if output_matrix[key][otherkey] != 0:
-#                    output_matrix[otherkey][key] = output_matrix[key][otherkey]
 
         for key in output_matrix.keys():
             if key.find(".vcf") != -1:
@@ -1056,7 +955,6 @@ def classifying_test():
                         trainMatrix.append(samples[j])
                         trainCategory.append(classLabel[j])
                 #training samples in temp
-                #p0V, p1V, pAb = trainNB0(array(trainMatrix),array(trainCategory))
                 p1V,p1S, p0V, p0S = trainNV(array(trainMatrix),array(trainCategory))
                 result = classifyNV(samples[i],p0V,p0S, p1V, p1S)
                 if result[1] == 1:
@@ -1087,11 +985,6 @@ def classifying_test():
             output_matrix_f.write("\t" + key[0:key.index('.')])
         output_matrix_f.write("\n")
 
-#        for key in output_matrix.keys():
-#            for otherkey in output_matrix[key].keys():
-#                if output_matrix[key][otherkey] != 0:
-#                    output_matrix[otherkey][key] = output_matrix[key][otherkey]
-
         for key in output_matrix.keys():
             output_matrix_f.write(key[0:key.index('.')])
             for otherkey in output_matrix.keys():
@@ -1102,8 +995,6 @@ def classifying_test():
         if out_tag!="stdout":
             out_f.close()
             out_matched.close()
-
-
 
 def generate_R_scripts():
     r_file = open(outdir + "/r_script.r","w")
@@ -1180,7 +1071,6 @@ def run_mpileup():
                 BCFTOOLS = temp[1].strip()
             elif temp[0].startswith("REF"):
                 REF = temp[1].strip()
-#    REF="/NAS/nas33-2/mpileup/hg19.fasta"
 
     version =""
 ##version of samtools
@@ -1204,8 +1094,6 @@ def run_mpileup():
             command = SAMTOOLS + " mpileup -uf " + REF + " -l " + bedFile + " " + sample + " | "  + BCFTOOLS + " call -c > " + outdir + "/" + tag  + ".vcf"
         print(command)
         call(command,shell=True)
- #       proc = subprocess.Popen(command, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-#        return_code = proc.wait()
 
 def find_bam_list():
     for root, dirs, files in os.walk(base_dir):
@@ -1387,10 +1275,6 @@ if __name__ == '__main__':
     parser.add_argument('-N','--outfilename',metavar='output_filename',dest='outfilename',action='store',default="output",help='OutputFileName ( default : output ), -N filename')
     parser.add_argument('-nz','--nonzero',dest='nonzero_read',action='store_true',help='Use non-zero mean depth of target loci as reference correlation. (default: Use mean depth of all target loci)')
 
-#    parser.add_argument('-m','--method',metavar='METHOD',required=True,dest='method',action='store', choices={'clustering','classifying'},default='classifying', help='Method (Clustering, Classifying)')
-#    parser.add_argument('-k','--knn',metavar='1,2,3,..',dest='KNN',action='store', default="1", help='K value for K-nearest neighbors clustering')
- #   parser.add_argument('-p','--pdf',metavar='PDFfile',dest='PDF_flag',action='store',default="otuput",help='output Prgramming R based clustering vector image of PDF file, -p filename')
-
     args=parser.parse_args()
 
     base_list = ""
@@ -1464,17 +1348,6 @@ if __name__ == '__main__':
                 createDataSetFromList(base_list,bedFile)
                 classifying()
 
-
-#    outFileName = args.class_file
-#    if args.method == "clustering":
-#        print "Classifying data set based on kNN ",str(args.KNN)
-#        clustering(int(args.KNN))
-#    elif args.method =="classifying":
-#        classifying()
-
- #       if args.PDF_flag != None:
-#    output_filter()
     pdf_tag = out_tag
     generate_R_scripts()
     run_R_scripts()
-#	remove_internal_files()
